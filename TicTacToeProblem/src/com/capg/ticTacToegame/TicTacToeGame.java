@@ -2,14 +2,14 @@ package com.capg.ticTacToegame;
 
 import java.util.Scanner;
 
-enum Turn{
+enum Turn {
 	PLAYER, COMPUTER
 }
 
 public class TicTacToeGame {
 
 	static Scanner sc = new Scanner(System.in);
-	
+
 	private static final char CHARACTER_X = 'X';
 	private static final char CHARACTER_O = 'O';
 	private static final int HEAD = 0;
@@ -22,10 +22,10 @@ public class TicTacToeGame {
 		System.out.println("Enter your choice 'X' or 'O'");
 		char playerChoice = sc.next().charAt(0);
 		computerChoice(playerChoice);
-		
+
 		String firstChance = firstChance();
 		System.out.println(firstChance + " Plays First");
-		
+
 		System.out.println("Enter the index location");
 		int index = sc.nextInt();
 		playerMove(index, playerChoice);
@@ -87,13 +87,43 @@ public class TicTacToeGame {
 		index = checkForFreeSpace(index);
 		ticTacBoard[index] = choice;
 	}
-	
-	//UC6
-	private static String firstChance() {
-		int toss = (int)Math.floor((Math.random()*10)%2);
-		if(toss == HEAD)
+
+	// UC6
+	public static String firstChance() {
+		int toss = (int) Math.floor((Math.random() * 10) % 2);
+		if (toss == HEAD)
 			return Turn.PLAYER.toString();
 		else
 			return Turn.COMPUTER.toString();
+	}
+
+	
+	//UC7
+	public static boolean checkTie() {
+		boolean tie = true;
+		for(int i=0; i<10; i++) {
+			if( ticTacBoard[i] == ' ' ) {
+				tie = false;
+			}
+		}
+		return tie;
+	}
+	public static String checkStatus(char selectdCharacter){
+		String status;
+		if((ticTacBoard[1] == selectdCharacter && ticTacBoard[2] == selectdCharacter && ticTacBoard[3] == selectdCharacter) || 
+		(ticTacBoard[4] == selectdCharacter && ticTacBoard[5] == selectdCharacter && ticTacBoard[6] == selectdCharacter) || 
+		(ticTacBoard[7] == selectdCharacter && ticTacBoard[8] == selectdCharacter && ticTacBoard[9] == selectdCharacter) || 
+		(ticTacBoard[1] == selectdCharacter && ticTacBoard[4] == selectdCharacter && ticTacBoard[7] == selectdCharacter) ||
+		(ticTacBoard[2] == selectdCharacter && ticTacBoard[5] == selectdCharacter && ticTacBoard[8] == selectdCharacter) ||
+		(ticTacBoard[3] == selectdCharacter && ticTacBoard[6] == selectdCharacter && ticTacBoard[9] == selectdCharacter) ||
+		(ticTacBoard[1] == selectdCharacter && ticTacBoard[5] == selectdCharacter && ticTacBoard[9] == selectdCharacter) ||
+		(ticTacBoard[3] == selectdCharacter && ticTacBoard[5] == selectdCharacter && ticTacBoard[7] == selectdCharacter)) {
+			status = "Win";
+		} else if(checkTie()){
+			status = "Tie";
+		} else {
+			status = "Change";
+		}
+		return status;
 	}
 }
