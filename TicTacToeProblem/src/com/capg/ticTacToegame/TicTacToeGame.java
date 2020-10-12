@@ -201,7 +201,7 @@ public class TicTacToeGame {
 			} else if (copyBoard[9] == ' ') {
 				index = 9;
 			} else if (copyBoard[5] == ' ') {
-				index = 5;
+				index = 5; 
 			} else {
 				for (int j = 1; j < 10; j++) {
 					if (copyBoard[j] == ' ') {
