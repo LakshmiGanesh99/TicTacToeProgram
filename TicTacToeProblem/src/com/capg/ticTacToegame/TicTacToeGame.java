@@ -2,21 +2,31 @@ package com.capg.ticTacToegame;
 
 import java.util.Scanner;
 
+enum Turn{
+	PLAYER, COMPUTER
+}
+
 public class TicTacToeGame {
 
 	static Scanner sc = new Scanner(System.in);
-
+	
 	private static final char CHARACTER_X = 'X';
-	private static final char CHARACTER_Y = 'Y';
+	private static final char CHARACTER_O = 'O';
+	private static final int HEAD = 0;
 
 	// main
 	public static void main(String[] args) {
 
 		createBoard();
 
+		System.out.println("Enter your choice 'X' or 'O'");
 		char playerChoice = sc.next().charAt(0);
 		computerChoice(playerChoice);
-
+		
+		String firstChance = firstChance();
+		System.out.println(firstChance + " Plays First");
+		
+		System.out.println("Enter the index location");
 		int index = sc.nextInt();
 		playerMove(index, playerChoice);
 		printBoard();
@@ -37,7 +47,7 @@ public class TicTacToeGame {
 	public static char computerChoice(char playerChoice) {
 		char computerChoice;
 		if (playerChoice == CHARACTER_X) {
-			computerChoice = CHARACTER_Y;
+			computerChoice = CHARACTER_O;
 		} else {
 			computerChoice = CHARACTER_X;
 		}
@@ -58,7 +68,6 @@ public class TicTacToeGame {
 		while (!(index > 0 && index < 10)) {
 			System.out.println("Enter proper index value from 1-9");
 			index = sc.nextInt();
-			System.out.println("select" + index);
 		}
 
 		return index;
@@ -77,5 +86,14 @@ public class TicTacToeGame {
 	public static void playerMove(int index, char choice) {
 		index = checkForFreeSpace(index);
 		ticTacBoard[index] = choice;
+	}
+	
+	//UC6
+	private static String firstChance() {
+		int toss = (int)Math.floor((Math.random()*10)%2);
+		if(toss == HEAD)
+			return Turn.PLAYER.toString();
+		else
+			return Turn.COMPUTER.toString();
 	}
 }
