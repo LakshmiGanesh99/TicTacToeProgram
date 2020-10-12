@@ -176,7 +176,7 @@ public class TicTacToeGame {
 					System.out.println("win");
 					index = i;
 					break;
-				} else {
+				} else if (!(status.equals("WIN"))) {
 					copyBoard[i] = pChoice;
 					status = checkStatus(copyBoard, pChoice);
 					if (status.contains("WIN")) {
@@ -188,10 +188,22 @@ public class TicTacToeGame {
 			}
 		}
 		if (index == 0) {
-			for (int j = 1; j < 10; j++) {
-				if (copyBoard[j] == ' ') {
-					index = j;
-					break;
+			if (copyBoard[1] == ' ') {
+				index = 1;
+			} else if (copyBoard[3] == ' ') {
+				index = 3;
+			} else if (copyBoard[7] == ' ') {
+				index = 7;
+			} else if (copyBoard[9] == ' ') {
+				index = 9;
+			} else if (copyBoard[5] == ' ') {
+				index = 5;
+			} else {
+				for (int j = 1; j < 10; j++) {
+					if (copyBoard[j] == ' ') {
+						index = j;
+						break;
+					}
 				}
 			}
 		}
