@@ -18,18 +18,44 @@ public class TicTacToeGame {
 	public static void main(String[] args) {
 
 		createBoard();
-
-		System.out.println("Enter your choice 'X' or 'O'");
+		System.out.println("Please select your choice(X/O):");
 		char playerChoice = sc.next().charAt(0);
-		computerChoice(playerChoice);
-
-		String firstChance = firstChance();
-		System.out.println(firstChance + " Plays First");
-
-		System.out.println("Enter the index location");
-		int index = sc.nextInt();
-		playerMove(index, playerChoice);
-		printBoard();
+		char computerChoice = computerChoice(playerChoice);
+		String whoPlays = firstChance();
+		System.out.println("First Chance given to: " + whoPlays);
+		String gameStatus = checkStatus(playerChoice);
+		String showResult = "Game is on";
+		while (gameStatus.equals("CHANGE")) {
+			if (whoPlays.equals("PLAYER")) {
+				System.out.println("Please select a position(1-9): ");
+				int index = sc.nextInt();
+				playerMove(index, playerChoice);
+				gameStatus = checkStatus(playerChoice);
+				if (gameStatus.equals("WIN")) {
+					showResult = "Player Won!";
+				} else if (gameStatus.equals("TIE")) {
+					showResult = "Match Tie!";
+				} else {
+					whoPlays = "COMPUTER";
+				}
+				printBoard();
+			} else {
+				System.out.println("Please select a position(1-9) for Computer: ");
+				int index = computerIndex(computerChoice);
+				System.out.println(index);
+				playerMove(index, computerChoice);
+				gameStatus = checkStatus(computerChoice);
+				if (gameStatus.equals("WIN")) {
+					showResult = "Computer Won!";
+				} else if (gameStatus.equals("TIE")) {
+					showResult = "Match Tie!";
+				} else {
+					whoPlays = "PLAYER";
+				}
+				printBoard();
+			}
+		}
+		System.out.println(showResult);
 	}
 
 	static char[] ticTacBoard;
@@ -97,33 +123,68 @@ public class TicTacToeGame {
 			return Turn.COMPUTER.toString();
 	}
 
-	
-	//UC7
+	// UC7
 	public static boolean checkTie() {
 		boolean tie = true;
-		for(int i=0; i<10; i++) {
-			if( ticTacBoard[i] == ' ' ) {
+		for (int i = 1; i < 10; i++) {
+			if (ticTacBoard[i] == ' ') {
 				tie = false;
 			}
 		}
 		return tie;
 	}
-	public static String checkStatus(char selectdCharacter){
+
+	public static String checkStatus(char selectdCharacter) {
 		String status;
-		if((ticTacBoard[1] == selectdCharacter && ticTacBoard[2] == selectdCharacter && ticTacBoard[3] == selectdCharacter) || 
-		(ticTacBoard[4] == selectdCharacter && ticTacBoard[5] == selectdCharacter && ticTacBoard[6] == selectdCharacter) || 
-		(ticTacBoard[7] == selectdCharacter && ticTacBoard[8] == selectdCharacter && ticTacBoard[9] == selectdCharacter) || 
-		(ticTacBoard[1] == selectdCharacter && ticTacBoard[4] == selectdCharacter && ticTacBoard[7] == selectdCharacter) ||
-		(ticTacBoard[2] == selectdCharacter && ticTacBoard[5] == selectdCharacter && ticTacBoard[8] == selectdCharacter) ||
-		(ticTacBoard[3] == selectdCharacter && ticTacBoard[6] == selectdCharacter && ticTacBoard[9] == selectdCharacter) ||
-		(ticTacBoard[1] == selectdCharacter && ticTacBoard[5] == selectdCharacter && ticTacBoard[9] == selectdCharacter) ||
-		(ticTacBoard[3] == selectdCharacter && ticTacBoard[5] == selectdCharacter && ticTacBoard[7] == selectdCharacter)) {
-			status = "Win";
-		} else if(checkTie()){
-			status = "Tie";
+		if ((ticTacBoard[1] == selectdCharacter && ticTacBoard[2] == selectdCharacter
+				&& ticTacBoard[3] == selectdCharacter)
+				|| (ticTacBoard[4] == selectdCharacter && ticTacBoard[5] == selectdCharacter
+						&& ticTacBoard[6] == selectdCharacter)
+				|| (ticTacBoard[7] == selectdCharacter && ticTacBoard[8] == selectdCharacter
+						&& ticTacBoard[9] == selectdCharacter)
+				|| (ticTacBoard[1] == selectdCharacter && ticTacBoard[4] == selectdCharacter
+						&& ticTacBoard[7] == selectdCharacter)
+				|| (ticTacBoard[2] == selectdCharacter && ticTacBoard[5] == selectdCharacter
+						&& ticTacBoard[8] == selectdCharacter)
+				|| (ticTacBoard[3] == selectdCharacter && ticTacBoard[6] == selectdCharacter
+						&& ticTacBoard[9] == selectdCharacter)
+				|| (ticTacBoard[1] == selectdCharacter && ticTacBoard[5] == selectdCharacter
+						&& ticTacBoard[9] == selectdCharacter)
+				|| (ticTacBoard[3] == selectdCharacter && ticTacBoard[5] == selectdCharacter
+						&& ticTacBoard[7] == selectdCharacter)) {
+			status = "WIN";
+		} else if (checkTie()) {
+			status = "TIE";
 		} else {
-			status = "Change";
+			status = "CHANGE";
 		}
 		return status;
+	}
+
+	// UC8
+	public static int computerIndex(char choice) {
+		char[] copyBoard = new char[10];
+		for (int i = 0; i < 10; i++) {
+			copyBoard[i] = ticTacBoard[i];
+		}
+		int index = 0;
+		for (int i = 1; i < 10; i++) {
+			if (copyBoard[i] == ' ') {
+				copyBoard[i] = choice;
+				String status = checkStatus(choice);
+				if (status.equals("WIN")) {
+					index = i;
+				}
+				copyBoard[i] = ' ';
+			}
+		}
+		if (index == 0) {
+			for (int j = 1; j < 10; j++) {
+				if (copyBoard[j] == ' ') {
+					index = j;
+				}
+			}
+		}
+		return index;
 	}
 }
