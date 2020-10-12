@@ -6,7 +6,7 @@ enum Turn {
 	PLAYER, COMPUTER
 }
 
-public class TicTacToeGame {
+public class TicTacToeGame  {
 
 	static Scanner sc = new Scanner(System.in);
 
