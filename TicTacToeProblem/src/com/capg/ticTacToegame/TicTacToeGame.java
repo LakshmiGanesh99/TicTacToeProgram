@@ -23,14 +23,14 @@ public class TicTacToeGame {
 		char computerChoice = computerChoice(playerChoice);
 		String whoPlays = firstChance();
 		System.out.println("First Chance given to: " + whoPlays);
-		String gameStatus = checkStatus(playerChoice);
+		String gameStatus = checkStatus(ticTacBoard, playerChoice);
 		String showResult = "Game is on";
 		while (gameStatus.equals("CHANGE")) {
 			if (whoPlays.equals("PLAYER")) {
 				System.out.println("Please select a position(1-9): ");
 				int index = sc.nextInt();
 				playerMove(index, playerChoice);
-				gameStatus = checkStatus(playerChoice);
+				gameStatus = checkStatus(ticTacBoard, playerChoice);
 				if (gameStatus.equals("WIN")) {
 					showResult = "Player Won!";
 				} else if (gameStatus.equals("TIE")) {
@@ -41,10 +41,10 @@ public class TicTacToeGame {
 				printBoard();
 			} else {
 				System.out.println("Please select a position(1-9) for Computer: ");
-				int index = computerIndex(computerChoice);
+				int index = computerIndex(computerChoice, playerChoice);
 				System.out.println(index);
 				playerMove(index, computerChoice);
-				gameStatus = checkStatus(computerChoice);
+				gameStatus = checkStatus(ticTacBoard, computerChoice);
 				if (gameStatus.equals("WIN")) {
 					showResult = "Computer Won!";
 				} else if (gameStatus.equals("TIE")) {
@@ -134,7 +134,7 @@ public class TicTacToeGame {
 		return tie;
 	}
 
-	public static String checkStatus(char selectdCharacter) {
+	public static String checkStatus(char[] ticTacBoard, char selectdCharacter) {
 		String status;
 		if ((ticTacBoard[1] == selectdCharacter && ticTacBoard[2] == selectdCharacter
 				&& ticTacBoard[3] == selectdCharacter)
@@ -162,18 +162,27 @@ public class TicTacToeGame {
 	}
 
 	// UC8
-	public static int computerIndex(char choice) {
+	public static int computerIndex(char cChoice, char pChoice) {
 		char[] copyBoard = new char[10];
 		for (int i = 0; i < 10; i++) {
 			copyBoard[i] = ticTacBoard[i];
 		}
 		int index = 0;
-		for (int i = 1; i < 10; i++) {
+		for (int i = 0; i < 10; i++) {
 			if (copyBoard[i] == ' ') {
-				copyBoard[i] = choice;
-				String status = checkStatus(choice);
-				if (status.equals("WIN")) {
+				copyBoard[i] = cChoice;
+				String status = checkStatus(copyBoard, cChoice);
+				if (status.contains("WIN")) {
+					System.out.println("win");
 					index = i;
+					break;
+				} else {
+					copyBoard[i] = pChoice;
+					status = checkStatus(copyBoard, pChoice);
+					if (status.contains("WIN")) {
+						System.out.println("win");
+						index = i;
+					}
 				}
 				copyBoard[i] = ' ';
 			}
@@ -182,6 +191,7 @@ public class TicTacToeGame {
 			for (int j = 1; j < 10; j++) {
 				if (copyBoard[j] == ' ') {
 					index = j;
+					break;
 				}
 			}
 		}
