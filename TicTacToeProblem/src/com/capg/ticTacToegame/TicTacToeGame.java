@@ -6,7 +6,7 @@ enum Turn {
 	PLAYER, COMPUTER
 }
 
-public class TicTacToeGame  {
+public class TicTacToeGame {
 
 	static Scanner sc = new Scanner(System.in);
 
@@ -16,46 +16,50 @@ public class TicTacToeGame  {
 
 	// main
 	public static void main(String[] args) {
-
-		createBoard();
-		System.out.println("Please select your choice(X/O):");
-		char playerChoice = sc.next().charAt(0);
-		char computerChoice = computerChoice(playerChoice);
-		String whoPlays = firstChance();
-		System.out.println("First Chance given to: " + whoPlays);
-		String gameStatus = checkStatus(ticTacBoard, playerChoice);
-		String showResult = "Game is on";
-		while (gameStatus.equals("CHANGE")) {
-			if (whoPlays.equals("PLAYER")) {
-				System.out.println("Please select a position(1-9): ");
-				int index = sc.nextInt();
-				playerMove(index, playerChoice);
-				gameStatus = checkStatus(ticTacBoard, playerChoice);
-				if (gameStatus.equals("WIN")) {
-					showResult = "Player Won!";
-				} else if (gameStatus.equals("TIE")) {
-					showResult = "Match Tie!";
+		char playAgain = 'Y';
+		while (playAgain == 'Y') {
+			createBoard();
+			System.out.println("Please select your choice(X/O):");
+			char playerChoice = sc.next().charAt(0);
+			char computerChoice = computerChoice(playerChoice);
+			String whoPlays = firstChance();
+			System.out.println("First Chance given to: " + whoPlays);
+			String gameStatus = checkStatus(ticTacBoard, playerChoice);
+			String showResult = "Game is on";
+			while (gameStatus.equals("CHANGE")) {
+				if (whoPlays.equals("PLAYER")) {
+					System.out.println("Please select a position(1-9): ");
+					int index = sc.nextInt();
+					playerMove(index, playerChoice);
+					gameStatus = checkStatus(ticTacBoard, playerChoice);
+					if (gameStatus.equals("WIN")) {
+						showResult = "Player Won!";
+					} else if (gameStatus.equals("TIE")) {
+						showResult = "Match Tie!";
+					} else {
+						whoPlays = "COMPUTER";
+					}
+					printBoard();
 				} else {
-					whoPlays = "COMPUTER";
+					System.out.println("Please select a position(1-9) for Computer: ");
+					int index = computerIndex(computerChoice, playerChoice);
+					System.out.println(index);
+					playerMove(index, computerChoice);
+					gameStatus = checkStatus(ticTacBoard, computerChoice);
+					if (gameStatus.equals("WIN")) {
+						showResult = "Computer Won!";
+					} else if (gameStatus.equals("TIE")) {
+						showResult = "Match Tie!";
+					} else {
+						whoPlays = "PLAYER";
+					}
+					printBoard();
 				}
-				printBoard();
-			} else {
-				System.out.println("Please select a position(1-9) for Computer: ");
-				int index = computerIndex(computerChoice, playerChoice);
-				System.out.println(index);
-				playerMove(index, computerChoice);
-				gameStatus = checkStatus(ticTacBoard, computerChoice);
-				if (gameStatus.equals("WIN")) {
-					showResult = "Computer Won!";
-				} else if (gameStatus.equals("TIE")) {
-					showResult = "Match Tie!";
-				} else {
-					whoPlays = "PLAYER";
-				}
-				printBoard();
 			}
+			System.out.println(showResult);
+			System.out.println("Do you want to play again?(Y/N)");
+			playAgain = sc.next().charAt(0);
 		}
-		System.out.println(showResult);
 	}
 
 	static char[] ticTacBoard;
@@ -161,7 +165,7 @@ public class TicTacToeGame  {
 		return status;
 	}
 
-	// UC8
+	// UC8 - UC12
 	public static int computerIndex(char cChoice, char pChoice) {
 		char[] copyBoard = new char[10];
 		for (int i = 0; i < 10; i++) {
