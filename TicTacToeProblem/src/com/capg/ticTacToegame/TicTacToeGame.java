@@ -3,32 +3,45 @@ package com.capg.ticTacToegame;
 import java.util.Scanner;
 
 public class TicTacToeGame {
+
 	static Scanner sc = new Scanner(System.in);
 
-	private static final char Character_X = 'X';
-	private static final char Character_Y = 'O';
+	private static final char CHARACTER_X = 'X';
+	private static final char CHARACTER_Y = 'Y';
 
 	public static void main(String[] args) {
+
 		createBoard();
-		System.out.println("Enter your choice 'X' or 'O'");
-		playerChoice(sc.next().charAt(0));
+		char playerChoice = sc.next().charAt(0);
+		computerChoice(playerChoice);
+		printBoard();
 	}
 
+	static char[] ticTacBoard;
+
 	public static char[] createBoard() {
-		char[] ticTacBoard = new char[10];
-		for (int i = 1; i < 10; i++) {
+		ticTacBoard = new char[10];
+		for (int i = 0; i < 10; i++) {
 			ticTacBoard[i] = ' ';
 		}
 		return ticTacBoard;
 	}
 
-	public static char playerChoice(char playerChoice) {
+	public static char computerChoice(char playerChoice) {
 		char computerChoice;
-		if (playerChoice == Character_X) {
-			computerChoice = Character_Y;
+		if (playerChoice == CHARACTER_X) {
+			computerChoice = CHARACTER_Y;
 		} else {
-			computerChoice = Character_Y;
+			computerChoice = CHARACTER_X;
 		}
 		return computerChoice;
+	}
+
+	public static void printBoard() {
+		System.out.println(" " + ticTacBoard[1] + " | " + ticTacBoard[2] + " | " + ticTacBoard[3]);
+		System.out.println("-----------");
+		System.out.println(" " + ticTacBoard[4] + " | " + ticTacBoard[5] + " | " + ticTacBoard[6]);
+		System.out.println("-----------");
+		System.out.println(" " + ticTacBoard[7] + " | " + ticTacBoard[8] + " | " + ticTacBoard[9]);
 	}
 }
